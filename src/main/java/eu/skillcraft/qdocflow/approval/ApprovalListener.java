@@ -1,6 +1,5 @@
 package eu.skillcraft.qdocflow.approval;
 
-import eu.skillcraft.qdocflow.shared.kernel.events.ApprovalTimeExpired;
 import lombok.AllArgsConstructor;
 import org.springframework.context.event.EventListener;
 
