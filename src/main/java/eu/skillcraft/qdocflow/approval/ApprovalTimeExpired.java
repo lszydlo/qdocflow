@@ -4,7 +4,7 @@ import eu.skillcraft.qdocflow.shared.kernel.VcId;
 import lombok.Value;
 
 @Value
-public class ApprovalTimeExpired {
+class ApprovalTimeExpired {
 
 	private final VcId vcId;
 }
