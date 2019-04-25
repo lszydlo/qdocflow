@@ -1,7 +1,7 @@
 package eu.skillcraft.qdocflow.gateway;
 
+import eu.skillcraft.qdocflow.approval.ApprovalCommand;
 import eu.skillcraft.qdocflow.approval.ApprovalFacade;
-import eu.skillcraft.qdocflow.approval.SendToVerificationCommand;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,7 +17,7 @@ public class VcResource {
 
 
 	@PutMapping
-	public ResponseEntity<Void> sendToVerification(@RequestBody SendToVerificationCommand command) {
+	public ResponseEntity<Void> sendToVerification(@RequestBody ApprovalCommand.DoSendVcToVerification command) {
 		approvalFacade.handle(command);
 		return ResponseEntity.ok().build();
 	}
