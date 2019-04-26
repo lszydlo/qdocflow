@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 public abstract class ApprovalCommand implements Command {
 
-	protected VcId vcId;
+	private VcId vcId;
 
 	public static class DoSendVcToVerification extends ApprovalCommand {
 		public DoSendVcToVerification(VcId vcId) {

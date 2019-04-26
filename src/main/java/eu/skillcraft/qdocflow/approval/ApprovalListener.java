@@ -11,9 +11,6 @@ public class ApprovalListener {
 	@AllArgsConstructor
 	static class RejectionPolicy {
 
-
-
-
 		private final ApprovalFacade facade;
 
 		@EventListener
@@ -21,11 +18,6 @@ public class ApprovalListener {
 		public void listenFor(ApprovalTimeExpired event) {
 			facade.handle(new ApprovalCommand.DoAddComment(event.getVcId(),"expired"));
 			facade.handle(new ApprovalCommand.DoRejectVc(event.getVcId()));
-
-
-			if (true) {
-				throw new RuntimeException();
-			}
 		}
 	}
 
