@@ -12,4 +12,7 @@ public abstract class AggregateRoot {
 		unpublishedEvents.add(event);
 	}
 
+	public List<DomainEvent> getUnpublishedEvents() {
+		return unpublishedEvents;
+	}
 }

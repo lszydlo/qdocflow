@@ -4,15 +4,18 @@ import eu.skillcraft.qdocflow.approval.ApprovalCommand.DoAddComment;
 import eu.skillcraft.qdocflow.approval.ApprovalCommand.DoRejectVc;
 import eu.skillcraft.qdocflow.approval.ApprovalCommand.DoRequestVcPublication;
 import eu.skillcraft.qdocflow.approval.ApprovalCommand.DoSendVcToVerification;
+import eu.skillcraft.qdocflow.shared.DomainEvent;
 import eu.skillcraft.qdocflow.shared.kernel.VcId;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 import static eu.skillcraft.qdocflow.approval.ApprovalFacade.ApprovalState.TO_VERIFICATION;
 
 @AllArgsConstructor
-public class ApprovalFacade {
+public class ApprovalFacade  {
 
 
 	private final VcApprovalRepo repo;
@@ -39,19 +42,33 @@ public class ApprovalFacade {
 
 	}
 
-	static class VcApproval {
+	static class VcApproval  {
 
-		private ApprovalState currentState;
+		private final VcId vcId;
+		private final ApprovalState currentState;
+		private final Comments comments;
 
-		VcApproval(VcId vcId) {
 
+
+		VcApproval(VcApprovalRepo.VcApprovalRecord record) {
+			this.vcId = new VcId(record.id);
+			this.currentState = record.currentState;
+			this.comments = new Comments(record.comments);
 		}
 
-		void sendToVerification(LocalDate exprationDate) {
+		DomainEvent sendToVerification(LocalDate exprationDate) {
 			if (TO_VERIFICATION.isNot(currentState)) {
 				throw new RuntimeException();
 			} else {
-				currentState = TO_VERIFICATION;
+				return new VcWasSend(vcId);
+			}
+		}
+
+		private class Comments {
+			private List<String> comments;
+
+			private Comments(Set<VcApprovalRepo.CommentRecord> comments) {
+
 			}
 		}
 	}
