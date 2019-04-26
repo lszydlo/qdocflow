@@ -1,8 +1,10 @@
 package eu.skillcraft.qdocflow.approval;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
+import java.util.Optional;
 import java.util.UUID;
 
-interface VcApprovalDaoPort extends JpaRepository<VcApprovalRepo.VcApprovalRecord, UUID> {
+interface VcApprovalDaoPort {
+	Optional<VcApprovalRepo.VcApprovalRecord> findById(UUID id);
+
+	void save(VcApprovalRepo.VcApprovalRecord record);
 }

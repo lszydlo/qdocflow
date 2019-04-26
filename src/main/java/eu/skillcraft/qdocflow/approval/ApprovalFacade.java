@@ -24,6 +24,7 @@ public class ApprovalFacade  {
 
 
 	private final VcApprovalRepo repo;
+	private final VcApprovalFinder finder;
 	private final ExpirationPolicy.ExpirationPolicyFactory policyFactory;
 
 
@@ -47,6 +48,10 @@ public class ApprovalFacade  {
 
 	}
 
+	public VcApprovalReadModel execute(FindApprovalForId findApprovalForId) {
+		return finder.findById(findApprovalForId);
+	}
+
 	static class VcApproval  {
 
 		private final VcId vcId;
@@ -62,7 +67,7 @@ public class ApprovalFacade  {
 		}
 
 		DomainEvent sendToVerification(LocalDate exprationDate) {
-			if (TO_VERIFICATION.isNot(currentState)) {
+			if ( TO_VERIFICATION.isNot(currentState)) {
 				throw new RuntimeException();
 			} else {
 				return new VcWasSend(vcId);
@@ -113,7 +118,7 @@ public class ApprovalFacade  {
 		TO_VERIFICATION, VERIFIED, REJECTED, APPROVED;
 
 		public boolean isNot(ApprovalState state) {
-			return !this.equals(state);
+			return state != null && !this.equals(state);
 		}
 	}
 }
