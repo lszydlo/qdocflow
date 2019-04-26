@@ -4,10 +4,15 @@ import eu.skillcraft.qdocflow.approval.ApprovalCommand.DoAddComment;
 import eu.skillcraft.qdocflow.approval.ApprovalCommand.DoRejectVc;
 import eu.skillcraft.qdocflow.approval.ApprovalCommand.DoRequestVcPublication;
 import eu.skillcraft.qdocflow.approval.ApprovalCommand.DoSendVcToVerification;
+import eu.skillcraft.qdocflow.shared.AggregateRoot;
 import eu.skillcraft.qdocflow.shared.DomainEvent;
 import eu.skillcraft.qdocflow.shared.kernel.VcId;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -61,6 +66,37 @@ public class ApprovalFacade  {
 				throw new RuntimeException();
 			} else {
 				return new VcWasSend(vcId);
+			}
+		}
+
+		private class Comments {
+			private List<String> comments;
+
+			private Comments(Set<VcApprovalRepo.CommentRecord> comments) {
+
+			}
+		}
+	}
+
+	@Entity
+	@NoArgsConstructor
+	static class VcApprovalSimple extends AggregateRoot {
+
+		@Id
+		private VcId vcId;
+		private ApprovalState currentState;
+
+		@Embedded
+		private Comments comments;
+
+
+
+		void sendToVerification(LocalDate exprationDate) {
+			if (TO_VERIFICATION.isNot(currentState)) {
+				throw new RuntimeException();
+//				emit(new FailedEvent());
+			} else {
+				emit(new VcWasSend(vcId));
 			}
 		}
 

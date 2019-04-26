@@ -17,6 +17,7 @@ import java.util.function.Function;
 class VcApprovalRepo {
 
 	VcApprovalDaoPort dao;
+	EventStore eventStore;
 
 
 	@Transactional
@@ -29,6 +30,7 @@ class VcApprovalRepo {
 
 		record.apply(List.of(event));
 		dao.save(record);
+		eventStore.append(List.of(event));
 	}
 
 	@Entity
